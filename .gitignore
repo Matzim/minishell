@@ -1,3 +1,5 @@
+build/*
+
 # Created by https://www.toptal.com/developers/gitignore/api/c,vim,emacs,visualstudiocode,cmake
 # Edit at https://www.toptal.com/developers/gitignore?templates=c,vim,emacs,visualstudiocode,cmake
 
