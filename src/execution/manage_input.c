@@ -136,14 +136,12 @@ void move_row(int c, size_t size, size_t nb_cols, size_t *cur_pos,
 void write_line(struct vector *vect, size_t cur_pos, int nb_cols, size_t len,
                 char *path)
 {
-    // Modify the screen update with the signal SIGWINCH
     int len_path = ft_strlen(path);
     int max_row = (vect->size - 1 + PROMPT_SIZE + len_path) / nb_cols;
     int nb_col_lines = (cur_pos + PROMPT_SIZE + len_path) / nb_cols;
     char *caps = tigetstr("rc");
 
     write_str(caps, ft_strlen(caps));
-    // Clear current lines
     if (len)
     {
         caps = tiparm(tigetstr("dl"),
@@ -153,12 +151,12 @@ void write_line(struct vector *vect, size_t cur_pos, int nb_cols, size_t len,
     {
         caps = tiparm(tigetstr("dl"), 1 + max_row);
     }
+
     write_str(caps, ft_strlen(caps));
-    // Print the new line
     write_str(path, ft_strlen(path));
     write_str(PROMPT, PROMPT_SIZE);
     write_str(vect->data, vect->size);
-    // Put the cursor at the good place
+
     if (max_row)
     {
         caps = tiparm(tigetstr("cuu"), max_row);
