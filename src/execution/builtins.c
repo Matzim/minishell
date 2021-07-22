@@ -25,7 +25,10 @@ void mini_setenv(char **env, char *var, char *value)
         {
             free(env[index]);
             env[index] = ft_strjoin(var, "=");
+            char *save = env[index];
+            free(var);
             env[index] = ft_strjoin(env[index], value);
+            free(save);
             return;
         }
     }
