@@ -54,13 +54,11 @@ unsigned int count_separator(char *str, char sep)
 */
 char **split(char *str, char sep)
 {
-    // Count words
-    unsigned int nb_words = count_separator(str, sep);
-    char **ptr_str = malloc(sizeof(char *) * (nb_words + 1));
+    char **ptr_str = malloc(sizeof(char *) * (count_separator(str, sep) + 1));
+    unsigned int nb_words = 0;
 
     if (!ptr_str)
-        return 0;
-    nb_words = 0;
+        return NULL;
     while (*str != '\0')
     {
         unsigned int len = 0;
@@ -91,7 +89,7 @@ char **split(char *str, char sep)
             str++;
         }
     }
-    ptr_str[nb_words] = 0;
+    ptr_str[nb_words] = NULL;
     return ptr_str;
 }
 
@@ -142,7 +140,7 @@ void new_command(char *argv[], char *envp[], char *all_path[])
             break;
         }
         free(path);
-        path = 0;
+        path = NULL;
     }
     free_tab(all_path);
     if (path != NULL)
@@ -159,8 +157,7 @@ void new_command(char *argv[], char *envp[], char *all_path[])
         free(path);
         if (!access(argv[0], F_OK | X_OK))
         {
-            res = execve(argv[0], argv, envp);
-            if (res == -1)
+            if ((res = execve(argv[0], argv, envp)) == -1)
             {
                 write_str("minishell: ", 11);
                 ft_putstr(argv[0]);
@@ -236,12 +233,12 @@ int execute_line(char *argv[], char *envp[], int *stop)
     }
     else if (ft_strcmp(argv[0], "echo") == 0)
     {
-        while (argv[echo] != 0 && argv[echo + 1] != 0)
+        while (argv[echo] != NULL && argv[echo + 1] != NULL)
         {
             ft_putstr(argv[echo++]);
             write_str(" ", 1);
         }
-        if (argv[echo] != 0)
+        if (argv[echo] != NULL)
         {
             ft_putstr(argv[echo++]);
             write_str("\n", 1);
