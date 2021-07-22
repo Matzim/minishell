@@ -1,39 +1,6 @@
 #include "builtins.h"
 
-/**
-** Change an environment variable
-** @param env Array of character pointers to the environment strings
-** @param var Name of the variable
-** @param value Value of the variable
-*/
-void mini_setenv(char **env, char *var, char *value)
-{
-    char *tmp = var;
-
-    for (; *tmp != 0; tmp++)
-    {
-        if (*tmp == '=')
-        {
-            ft_putstr("mini_setenv: var contains an '=' character\n");
-            return;
-        }
-    }
-    for (size_t index = 0; env[index] != 0; index++)
-    {
-        char *ptr = check_variable(env[index], var);
-        if (ptr != 0)
-        {
-            free(env[index]);
-            env[index] = ft_strjoin(var, "=");
-            char *save = env[index];
-            free(var);
-            env[index] = ft_strjoin(env[index], value);
-            free(save);
-            return;
-        }
-    }
-    ft_putstr("mini_setenv: error with the environ !\n");
-}
+#include <stdlib.h>
 
 /**
 ** Expand the path
@@ -96,7 +63,7 @@ void move_to_dir(char **argv, char **envp)
         }
         else
         {
-            mini_setenv(envp, "OLDPWD", path);
+            setenv("OLDPWD", path, 1);
             path = getcwd(buf, 4096);
             if (path == NULL)
             {
@@ -104,7 +71,7 @@ void move_to_dir(char **argv, char **envp)
                 free(destination);
                 return;
             }
-            mini_setenv(envp, "PWD", path);
+            setenv("PWD", path, 1);
         }
     }
     free(destination);
@@ -120,7 +87,7 @@ void return_to_old_dir(char **envp)
     char *old_dir = get_value(envp, "PWD");
 
     // We modify the env value of OLDPWD with the value of PWD
-    mini_setenv(envp, "OLDPWD", old_dir);
+    setenv("OLDPWD", old_dir, 1);
     free(old_dir);
     // We move in the next_path, if is valid
     if (!access(next_path, F_OK | X_OK) && chdir(next_path) == -1)
@@ -132,7 +99,7 @@ void return_to_old_dir(char **envp)
         write_str(next_path, ft_strlen(next_path));
         write_str("\n", 1);
         // If the chdir success, we modify variable PWD with $OLD_PWD
-        mini_setenv(envp, "PWD", next_path);
+        setenv("PWD", next_path, 1);
     }
     free(next_path);
 }
@@ -150,7 +117,7 @@ void mini_cd(char **argv, char **envp)
         char *path = NULL;
         // We modify the env value of OLDPWD with the value of PWD
         path = get_value(envp, "PWD");
-        mini_setenv(envp, "OLDPWD", path);
+        setenv("OLDPWD", path, 1);
         free(path);
         path = get_value(envp, "HOME");
         if (!access(path, F_OK | X_OK) && chdir(path) == -1)
@@ -160,7 +127,7 @@ void mini_cd(char **argv, char **envp)
         else
         {
             // If the chdir success, we modify variable PWD with $HOME
-            mini_setenv(envp, "PWD", path);
+            setenv("PWD", path, 1);
         }
         free(path);
     }
