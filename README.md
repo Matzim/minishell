@@ -1,7 +1,6 @@
 # Minishell
-The goal of this project is to build a small shell with command line interface
-thanks to Curses.  
-This project uses Curses (a terminal control library).  
+This project build a small shell with command line interface thanks to Curses.  
+This project uses Curses library.
 Check is the unit testing library of the project.  
 CMake is the build system of the project.
 ## Build
