@@ -1,6 +1,6 @@
 # Minishell
-This project build a small shell with command line interface thanks to Curses.  
-This project uses Curses library.
+This project builds a small shell with command line interface thanks to Curses.  
+This project uses the Curses library.
 Check is the unit testing library of the project.  
 CMake is the build system of the project.
 ## Build
@@ -8,7 +8,6 @@ CMake is the build system of the project.
 ```bash
 cmake .
 make
-// Run the testsuite
 make test
 ```
 
